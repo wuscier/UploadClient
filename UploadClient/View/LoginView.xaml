@@ -1,0 +1,163 @@
+﻿<mah:MetroWindow x:Class="UploadClient.LoginView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:UploadClient"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+                 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                 mc:Ignorable="d"
+                 Title="LoginView" 
+                 Height="350" 
+                 Width="525"
+                 ShowTitleBar="False"
+                 ResizeMode="NoResize"
+                 GlowBrush="Purple"
+                 WindowStartupLocation="CenterScreen"
+                 ShowInTaskbar="False"
+                 FocusManager.FocusedElement="{Binding ElementName=uid}"
+                 FontSize="16"
+                 x:Name="loginView"
+                 >
+    <mah:MetroWindow.Resources>
+        <Style TargetType="{x:Type DockPanel}">
+            <Setter Property="Width" Value="260"></Setter>
+            <Setter Property="Margin" Value="10"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="10 5 5 5"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="10 5 5 5"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="Margin" Value="30 5 30 5"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type md:PackIcon}">
+            <Setter Property="Width" Value="38"></Setter>
+            <Setter Property="Height" Value="38"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource MaterialDesignCircularProgressBar}">
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Margin" Value="5 0 0 0"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="Margin" Value="10"></Setter>
+        </Style>
+    </mah:MetroWindow.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="1"
+                   >
+            <md:PackIcon Kind="Account"
+                         Foreground="{Binding ElementName=uid,Path=BorderBrush}"
+                         >
+
+            </md:PackIcon>
+
+            <TextBox x:Name="uid"
+                     md:HintAssist.Hint="用户名"
+                     Text="{Binding UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     >
+            </TextBox>
+        </DockPanel>
+
+        <DockPanel Grid.Row="2"
+                   >
+            <md:PackIcon Kind="Key"
+                         Foreground="{Binding ElementName=pwd,Path=BorderBrush}"
+                         >
+
+            </md:PackIcon>
+
+            <PasswordBox x:Name="pwd"
+                         md:HintAssist.Hint="密码"
+                         local:PasswordBoxHelper.Attach="True"
+                         local:PasswordBoxHelper.Password="{Binding Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     >
+
+            </PasswordBox>
+        </DockPanel>
+
+        <DockPanel Grid.Row="3"
+                   x:Name="dockpanel">
+
+            <CheckBox Content="记住密码"
+                      IsChecked="{Binding RememberMe}"
+                      >
+
+            </CheckBox>
+            <CheckBox Content="自动登录"
+                      HorizontalAlignment="Right"
+                      IsChecked="{Binding AutoLogin}"
+                      >
+
+            </CheckBox>
+        </DockPanel>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Content="登 录"
+                    IsDefault="True"
+                    Grid.Column="1"
+                    Width="{Binding ElementName=dockpanel,Path=ActualWidth}"
+                    Command="{Binding LoginCommand}"
+                    IsEnabled="{Binding IsLoginEnabled}"
+                    >
+
+            </Button>
+
+            <ProgressBar Value="0"
+                         IsIndeterminate="{Binding ShowProgressBar}"
+                         Grid.Column="2"
+                         >
+
+            </ProgressBar>
+        </Grid>
+
+        <Grid Grid.Row="5">
+            <md:Snackbar IsActive="{Binding ShowSnackBar}"
+                         Width="{Binding ElementName=loginView,Path=ActualWidth}"
+                         >
+                <md:SnackbarMessage Content="{Binding SnackBarMsg}"
+                                    ActionContent="确定"
+                                    ActionCommand="{Binding HideSnackBarCommand}"
+                                    >
+
+                </md:SnackbarMessage>
+            </md:Snackbar>
+        </Grid>
+    </Grid>
+
+</mah:MetroWindow>
